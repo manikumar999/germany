@@ -8,13 +8,13 @@ import base64
 from openai import OpenAI
 
 #SET OPEN AI KEY
-# os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_API_KEY_DEV"]
+# os.environ["OPENAI_API_KEY"] = "sk-proj-sjhdudg"
 
 # set streamlit layout wide
 st.set_page_config(layout="wide")
 client = OpenAI()
 
-# poppler_path = r"poppler-24.08.0\Library\bin" 
+poppler_path = r"poppler-24.08.0\Library\bin" 
 # use os to get poppler_path
 # poppler_path = os.path.join("poppler-24.08.0", "Library", "bin")
 # print(poppler_path)
@@ -54,7 +54,8 @@ def process_images_extract_json(base64_images):
                 
                 8. Phone number
 
-            Return the extracted information strictly in JSON format. The JSON should follow the structure below:
+            Return the extracted information strictly in JSON format. If the values are in a language other than English then convert the values to english and return.
+            The JSON should follow the structure below:
             {
             "ConferenceDetails": [
                 {
@@ -135,7 +136,7 @@ if uploaded_file is not None:
         st.write("Processing PDF...")
         images = []
         for upl_file in uploaded_file:
-            images += convert_from_bytes(upl_file.read())# poppler_path = poppler_path)
+            images += convert_from_bytes(upl_file.read(), poppler_path = poppler_path)
         
         # Process images to JSON
         base64_images = process_images_to_base64json(images)
@@ -162,9 +163,9 @@ if uploaded_file is not None:
                 })
 
             # Convert to DataFrame
-            df = pd.DataFrame(conference_rows)
+            df = pd.DataFrame(conference_rows).fillna("NA")
             st.title("Conference Details")
-            st.dataframe(df, use_container_width = True, height = 500, hide_index=True) 
+            st.dataframe(df, use_container_width = True, hide_index=True) 
 
         # create two columns
         # col1, col2 = st.columns(2)
