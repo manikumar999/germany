@@ -8,7 +8,7 @@ import base64
 from openai import OpenAI
 
 #SET OPEN AI KEY
-# os.environ["OPENAI_API_KEY"] = "sk-proj-sjhdudg"
+# os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_API_KEY_DEV"]
 
 # set streamlit layout wide
 st.set_page_config(layout="wide")
@@ -54,8 +54,7 @@ def process_images_extract_json(base64_images):
                 
                 8. Phone number
 
-            Return the extracted information strictly in JSON format. If the values are in a language other than English then convert the values to english and return.
-            The JSON should follow the structure below:
+            Return the extracted information strictly in JSON format. The JSON should follow the structure below:
             {
             "ConferenceDetails": [
                 {
@@ -163,9 +162,9 @@ if uploaded_file is not None:
                 })
 
             # Convert to DataFrame
-            df = pd.DataFrame(conference_rows).fillna("NA")
+            df = pd.DataFrame(conference_rows)
             st.title("Conference Details")
-            st.dataframe(df, use_container_width = True, hide_index=True) 
+            st.dataframe(df, use_container_width = True, height = 500, hide_index=True) 
 
         # create two columns
         # col1, col2 = st.columns(2)
